@@ -1,16 +1,20 @@
 # Online.sg #7 "Sinatra" Documents and Source code repository
 
+## Files
+
+- README.mkd - This file.
+- sample\_code/ - Sample code.
+- onsg7\_sinatra.mkd - Online.sg #7 Document
+
+## Online.sg #7 "Sinatra"
+
 Sorry, this event is Japanese only.
 
-## Online.sg
-
-Online Study Group
-
-## When
+### When
 
 December 13 (Sun) 13:00-15:00 (JST)
 
-## Speaker
+### Speaker
 
 ![sora_h](http://a1.twimg.com/profile_images/390791254/nobue_d1_bigger.png)
 
@@ -19,6 +23,6 @@ Sora Harakami
 - [cod.note](http://codnote.net/)
 - [soralabo](http://soralabo.net/)
 
-## Detail at
+### Detail at
 
 [http://onsg.techtalk.jp/07](http://onsg.techtalk.jp/07) (Japanese page)
