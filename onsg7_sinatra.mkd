@@ -1,0 +1,335 @@
+# Sinatra超入門 - ざっくりとSinatraの世界をつかんでみよう
+
+Sora Harakami <sora134[at]gmail.com>
+
+[http://codnote.net/](http://codnote.net/) 
+[Online.sg](http://onsg.techtalk.jp/07)
+
+*キーワード*: Sinatra, Ruby, Haml, sqlite, ruby-sqlite3, Active record
+
+## 自己紹介
+
+- 原上ソラ　(Sora Harakami)
+- 中1
+- 欠席数やばい (12/11現在から今年通算41日)
+- Twitter: @sora\_h
+- Skype: sora\_harakami
+- 自称Rubyist
+- ITmediaに紹介されたよ！ [素顔のデジタルネイティブ:原上ソラ/勉強会の再構築を図る気鋭の中学生](http://www.itmedia.co.jp/enterprise/articles/0908/01/news002.html)
+- Sinatra初心者（こないだはじめて触った）
+- 詳細: [sorah.cosmio.net](http://sorah.cosmio.net/)
+
+## Sinatra
+
+- [Sinatra](http://www.sinatrarb.com/)
+- 簡単フレームワーク
+- /hi にアクセスしたとき'Hello World!'と表示したければ
+
+        require 'rubygems'
+        require 'sinatra'
+        get '/hi' do
+          "Hello World!"
+        end
+
+- のRubyコードを実行するだけ！
+- 簡単。
+
+## 今日は
+
+- サンプルコードは実践したものをいじったコード。だからちょっとそこで使いやすいような感じになってます。
+- なので仕様が若干違いますがそこはつっこまないように。
+- 当日ギリギリで作ったので機能が一部不足しています。
+- そしてチュートリアルにのってそうなことばかりです。前回のScalaみたいに「やってみた」よ！みたいな感じ。
+
+## 環境
+
+- ruby-sqlite3が必要です。
+- sinatra activerecord hamlも必要です。
+
+        gem install sinatra activerecord haml ruby-sqlite3
+
+- を実行しましょう。ruby-sqlite3はMacなら標準で入ってます。Linux/Winは前準備が必要です。
+- まぁそこらへんは[ここ](http://sites.google.com/site/onlinestdygrp/02/sqlite_setup)を見てなんとかしてください。
+
+## サンプルコードと資料
+
+- [github:sorah/onsg7](http://github.com/sorah/onsg7) にすべておいてあります。
+- Downloadボタンでzipで落とすことも可能です。またはgit cloneで。
+
+        git clone git://github.com/sorah/onsg7.git
+
+- 資料はgithubで直接みたほうがわかりやすいかも。
+
+## 今回のサンプルコード
+
+- 一時的な売店みたいなのを管理するソフトウェアです。
+- 値下げを頻繁にするので値下げもしっかり対応しています。
+- 一部の処理が怪しいですけどそこはきにしない。今回はSinatraをやるので関係ないです！！！！１１１１
+- ダウンロードしたものの sample\_code/にはいっています。
+- アプリ名は*Shop*です。Shop.
+
+## Shopの仕様
+
+- 自由に商品を登録
+- 売れ残りなどを入力して、売れた個数を自動で確認
+- 売り上げ合計などをみることができる
+- 値段が変わった場合それを入力すると、以後登録した売り上げはその値段をベースに計算される
+- 機能実装不足で修正は一部可能。削除は可能。挿入無理。
+
+## Shopのファイル構成
+
+    shop.rb                   - Shop本体
+    shop_initialize.rb        - sqliteの初期化（migrate)
+    public/                   - staticファイル
+      |-- main.css            - CSS. /main.cssでみれる。
+    templates/                - テンプレート
+      |-- confirm.haml        - 確認ページ（削除しますか？などで仕様。流用可能）
+      |-- index.haml          - /でアクセスしたときに見れるページ
+      |-- item_edit.haml      - 商品情報の編集ページ
+      |-- item_new.haml       - 商品情報の作成ページ
+      |-- item.haml           - 商品ページ
+      |-- items.haml          - 商品リスト
+      |-- price_edit.haml     - 値段編集ページ
+      |-- sale_edit.haml      - 売り上げ編集ページ
+
+- こんな感じです。
+
+## Haml?
+
+- テンプレートみたいなもの
+- HTMLより書きやすいと感じる。Rubyコードをそのまま実行できたりする。
+
+        !!!
+        %html
+          %head
+            %title Online.sg 7 "sinatra"
+          %body
+            %h1 Online.sg 7 "sinatra"
+            %h2 When
+              %p 12/13(Sun) 13:00-15:00
+            %h2 Speaker
+              %p.name Sora Harakami
+            %h2 Detail
+              %a{'href' => 'http://onsg.techtalk.jp/07'} Online.sg 7 "Sinatra"
+
+- これが
+
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html>
+          <head>
+            <title>Online.sg 7 "sinatra"</title>
+          </head>
+          <body>
+            <h1>Online.sg 7 "sinatra"</h1>
+            <h2>When</h2>
+            <p>12/13(Sun) 13:00-15:00</p>
+            <h2>Speaker</h2>
+            <p class='name'>Sora Harakami</p>
+            <h2>Detail</h2>
+            <a href='http://onsg.techtalk.jp/07'>Online.sg 7 "Sinatra"</a>
+          </body>
+        </html>
+
+- こうなる。
+- まぁこんな感じです。Pythonみたいにインデント重視。
+
+## shop.rb
+
+- それだは解説に入っていきます。がしがしいきます。
+- shop.rbを開いてください。
+
+## モデル ( Activerecord )
+
+- Railsのモデル部分。Sinatraにモデルは付属していないのでActiverecordなどで補う必要があります。
+- 今回はItem(商品),Price(値段情報),Sale(売上情報)の3つのモデルを作ります。
+- Activerecordのモデルを定義する基本形は
+
+        class FooBar < ActiveRecord::Base
+        end
+
+- となります。ここに`has_many`や`has_one`,`belong_to`などを書き込んでリレーショナルシップを定義するみたいです。
+- まぁ今回は主にSinatraなのでこれ以上は踏み込まないようにしておきます。
+- 今回はさらに拡張して、Itemに様々なメソッドを追加しています。自分でもよくわかっていません。一番複雑なのはたぶんここだと思いますw
+
+### データベースの初期化
+
+- railsとおなじmigrateを用います。
+- shop\_initialize.rb を実行するとmigrateが実行されます。
+- ここを解説するとまた時間が無駄になるので気合いで読んでください。読まなくてもたぶんだいたいわかるとおもうので説明しないです。
+
+### Itemモデル
+
+- shop.rb:24行目付近です。
+- カラムは以下の通り。
+
+   - name - 商品の名前
+   - stock - 用意した個数
+
+- そしてこのモデルには以下のリレーショナルシップが定義されています。 
+
+        has_many :prices
+        has_many :sales
+
+- PriceとSaleを複数所有するということになります。
+- pricesやsalesメソッドで簡単に扱えるようになります。 .prices.create()などで作成したものはPriceに自動反映されたり。
+- 他にもいろいろなメソッドを自分で定義していますが、これは深く解説しません。だってSinatraとは関係ないですから・・！
+
+### Priceモデル
+
+- shop.rb:107行目付近です。
+- カラムは以下の通り。
+
+   - item\_id - 所有者(Item)のid
+   - price - 値段
+   - created\_at - 作成日時。Activerecordで自動生成されます。
+
+- このモデルのリレーショナルシップは以下。
+
+        belongs_to :item
+
+- 所有主がitemだということを定義してます。
+
+### Saleモデル
+
+- shop.rb:111行目付近です。
+- カラムは以下の通り。
+
+   - item\_id - 所有者(Item)のid
+   - price - 値段
+   - created\_at - 作成日時。Activerecordで自動生成されます。
+
+- このモデルのリレーショナルシップは以下。Priceと同じです。
+
+        belongs_to :item
+
+## 小技
+
+- shop.rb:117行目付近
+
+        set :views, File.dirname(__FILE__) + '/templates'
+
+- テンプレートファイルの位置をデフォルトとは変えています。
+
+## get
+
+- `get URL {...}` でアクセスするurlなどを指定できます。get,post,put,deleteなどがあるようです。メソッドごとに別にできます。
+- shop.rb:118行目付近
+
+        get '/' do
+           @amount = Item.all_amount
+           haml :index
+        end
+
+- getなどでは返却した値がブラウザなどに返却されるみたいです。 hamlメソッドはおそらく指定したhamlファイルをレンダリングしてかえすものとみていいでしょう。
+- インスタンス変数に代入するとその値はテンプレートから使用できるようになります。
+- templates/index.hamlではこのように利用しています。
+
+        %div.sale_amount
+          %span.uriage Sales
+          %span.amount= @amount.to_s
+
+- =の後はRubyの構文を評価できます。@amount + 1とかもいけます。
+- こんなこともできる:
+
+        %a{'href' => @hogehoge} @hogehogeにリンク
+
+- Hamlすげー
+
+## post
+
+- postなどはこんな感じで。/item/new(商品新規作成) を例に見てみましょう。
+- sale.rb:160行目付近です。
+
+        post '/item/new' do
+            item = Item.new(
+                :name => params[:name],
+                :stock => params[:stock].to_i
+            )
+            item.save
+            item.prices.create(
+                :price => params[:price].to_i 
+            )
+            item.sales.create(
+                :remain => params[:stock].to_i
+            )
+
+            redirect '/item/'+item.id.to_s
+        end
+
+- 処理の流れを説明すると、新しくItemを作成して、それを保存しそれにPriceとSaleを新しく所有させています。
+- `params[:hogehoge]`でPOSTなどのパラメータを取得できます。`params[:name]`は`name="name"`などで指定したフォームでしょう。
+- 最後に、redirectを使用してリダイレクトさせています。リダイレクトもSinatraだと簡単です。
+
+## hamlでループ
+
+- /item(商品一覧)を見てみましょう。
+- sale.rb:176行目付近です。
+
+        get '/item' do
+            @amount = Item.all_amount
+            @items = Item.find(:all)
+            haml :items
+        end
+
+- @itemsに`Item.find(:all)`をいれています。これをhaml側からループを使用して表示します。
+- template/items.hamlを見てみましょう。26行目付近です。
+
+        -@items.each do |i|
+          %tr
+            %td
+              %a{'href' => '/item/'+i.id.to_s}= i.name
+            %td= i.latest_price.price.to_s
+            %td= i.stock
+            %td= i.remain_stock.remain
+            %td= i.sale_amount
+            %td
+              %a{'href' => '/item/'+i.id.to_s+'/edit'} Edit
+            %td
+              %a{'href' => '/item/'+i.id.to_s+'/destroy'} Destroy
+
+- Rubyの構文を実行して、その中でHamlの構文を実行できます。
+- Hamlすげー
+
+## getやpostでurlのパラメータを受け取る
+
+- /item/2や/item/14などのurlにも対応できます。
+- item.rb:149行目付近です。
+
+        get '/item/:item' do
+            pass if params[:item] == 'new'
+            @amount = Item.all_amount
+            @item = Item.find_by_id(params[:item].to_i)
+            haml :item
+        end
+
+- url部分に`:item`だとかかくとparams[:item]でその部分を取得できるようです。
+- Sinatra簡単！
+
+## Sinatraの実行方法
+
+- そのファイルを単にrubyで実行する
+- CGIやRackで稼働させる
+
+など、いろいろな方法があるようです。CGIは重いです。実感的に。
+
+## さて
+
+- ほかになにか書くことないかなーと思ってたけど、もうなかった
+- ということでまとめます。短くてごめんなさい＞＜
+
+## まとめ
+
+- Sinatraは簡単
+- 小さい物なら素早く開発できる
+- 大きい物は向いてない
+- 大きい物にはRailsなどが適している
+
+## ご静聴ありがとうございました
+
+- 続きは二次会などで.
+- 二次会会場はココ,Lingrです。
+- アンケートにご協力ください. [事後アンケート](http://spreadsheets.google.com/viewform?formkey=dHM5OGo0ZFlROXpOYWJ1cmt2bUNtUFE6MA)
+- 次回のお知らせは [Twitter](http://twitter.com/onlinesg), [ML](http://groups.google.co.jp/group/onlinestdygrp), [Blog](http://onsg.blogspot.com/) などでもながしますので是非チェックしてくださいo- 今回で年内のOnline.sgは最後です。よいお年を。次回は1月の予定です。
+
+
+#### vim: set filetype=markdown :
