@@ -1,0 +1,17 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', 'content' => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title Edit sale - the Shop
+  %body
+    %h1 Edit sale
+    %form{ 'action' => '/sale/'+@item.id.to_s+'/'+@item.sales.index(@sale).to_s+'/edit', 'method' => 'POST'}
+      %dl
+        %dt.form_input
+          %label{'for' => 'form0_name'} Total Sales
+          %input{ 'type' => 'text', 'name' => 'sales', 'size' => '20', 'id' => 'form0_name','value' => @item.sales[0].remain - @sale.remain}
+      %input{'type' => 'submit', 'value' => 'Edit'}
+
+

@@ -1,0 +1,19 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', 'content' => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title Edit item - the Shop
+  %body
+    %h1 Edit item
+    %form{ 'action' => '/item/'+@item.id.to_s+'/edit', 'method' => 'POST'}
+      %dl
+        %dt.form_input
+          %label{'for' => 'form0_name'} Name
+          %input{ 'type' => 'text', 'name' => 'name', 'size' => '20', 'id' => 'form0_name','value' => @item.name}
+        %dt.form_input
+          %label{'for' => 'form0_name'} Stock
+          %input{ 'type' => 'text', 'name' => 'stock', 'size' => '20', 'id' => 'form0_name','value' => @item.stock.to_s}
+      %input{'type' => 'submit', 'value' => 'Edit'}
+

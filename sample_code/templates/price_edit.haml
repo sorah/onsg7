@@ -1,0 +1,18 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', 'content' => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title Edit price - the Shop
+  %body
+    %h1 Edit price
+    %form{ 'action' => '/price/'+@item.id.to_s+'/'+@item.prices.index(@price).to_s+'/edit', 'method' => 'POST'}
+      %dl
+        %dt.form_input
+          %label{'for' => 'form0_name'} Total Sales
+          %input{ 'type' => 'text', 'name' => 'price', 'size' => '20', 'id' => 'form0_name','value' => @price.price.to_s}
+      %input{'type' => 'submit', 'value' => 'Edit'}
+
+
+

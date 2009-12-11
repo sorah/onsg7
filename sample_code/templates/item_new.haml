@@ -1,0 +1,21 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', 'content' => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title New item - the Shop
+  %body
+    %h1 New item
+    %form{ 'action' => '/item/new', 'method' => 'POST'}
+      %dl
+        %dt.form_input
+          %label{'for' => 'form0_name'} Name
+          %input{ 'type' => 'text', 'name' => 'name', 'size' => '20', 'id' => 'form0_name'}
+        %dt.form_input
+          %label{'for' => 'form0_price'} Price
+          %input{ 'type' => 'text', 'name' => 'price', 'size' => '20', 'id' => 'form0_price'}
+        %dt.form_input
+          %label{'for' => 'form0_stock'} Stock
+          %input{ 'type' => 'text', 'name' => 'stock', 'size' => '20', 'id' => 'form0_stock'}
+      %input{'type' => 'submit', 'value' => 'Add'}

@@ -1,0 +1,105 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', :content => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title the Shop
+  %body
+    %h1= "Item - #{@item.name}"
+    %div.sale_amount
+      %span.uriage Sales
+      %span.amount= @amount.to_s
+    %p
+      %a{'href' => '/item/'+@item.id.to_s+'/edit'} Edit
+      %a{'href' => '/item/'+@item.id.to_s+'/destroy'} Destroy
+      %a{'href' => '/item'} Back 
+    %p.jumpto
+      JUMP TO: 
+      %a{'href' => '#status'} Status
+      %a{'href' => '#prices'} Prices
+      %a{'href' => '#sales'} Sales
+    %h2#status Status
+    %table
+      %tbody
+        %tr
+          %td{'style' => 'width: 80px;font-weight: bold'} Name
+          %td= @item.name
+        %tr
+          %td{'style' => 'width: 80px;font-weight: bold'} Price
+          %td= @item.latest_price.price.to_s
+        %tr
+          %td{'style' => 'width: 80px;font-weight: bold'} Stock
+          %td= @item.stock.to_s
+        %tr
+          %td{'style' => 'width: 80px;font-weight: bold'} Remain
+          %td= @item.remain_stock.remain
+        %tr
+          %td{'style' => 'width: 80px;font-weight: bold'} Amount
+          %td= @item.sale_amount()
+    %h2#prices Prices
+    %table
+      %thead
+        %tr
+          %td Time
+          %td Price
+          %td Sales
+          %td Amount
+          %td Edit
+          %td Destroy
+      %tbody
+        - @item.prices.each do |p|
+          %tr
+            %td= p.created_at.strftime("%y-%m-%d %H:%M:%S")
+            %td= p.price.to_s
+            %td= @item.sale_count(p)
+            %td= @item.sale_amount(p)
+            %td
+              %a{'href' => '/price/'+@item.id.to_s+'/'+@item.prices.index(p).to_s+'/edit'} Edit
+            %td
+              %a{'href' => '/price/'+@item.id.to_s+'/'+@item.prices.index(p).to_s+'/destroy'} Destroy
+        %tr
+          %form{'action' => '/price/'+@item.id.to_s+'/new','method' => 'POST'}
+            %td 
+            %td
+              %input{'type' => 'text','name' => 'price','size' => '8'}
+            %td
+            %td
+              %input{'type' => 'submit','value' => 'Add'}
+    %h2#sales Sales
+    %table
+      %thead
+        %tr
+          %td Time
+          %td Remain
+          %td Total Sales
+          %td Sales
+          %td Amount
+          %td Edit
+          %td Destroy
+      %tbody
+        - a = 0
+        - @item.sales.each do |p|
+          - b = @item.sale_count(p)
+          - a += b
+          %tr
+            %td= p.created_at.strftime("%y-%m-%d %H:%M:%S")
+            %td= p.remain
+            %td= a
+            %td= b
+            %td= @item.sale_amount(p)
+            %td
+              %a{'href' => '/sale/'+@item.id.to_s+'/'+@item.sales.index(p).to_s+'/edit'} Edit
+            %td
+              %a{'href' => '/sale/'+@item.id.to_s+'/'+@item.sales.index(p).to_s+'/destroy'} Destroy
+        %tr
+          %form{'action' => '/sale/'+@item.id.to_s+'/new','method' => 'POST'}
+            %td 
+            %td
+              %input{'type' => 'text','name' => 'remain','size' => '8'}
+            %td
+              %input{'type' => 'text','name' => 'sale','size' => '8'}
+            %td
+            %td
+              %input{'type' => 'submit','value' => 'Add'}
+     

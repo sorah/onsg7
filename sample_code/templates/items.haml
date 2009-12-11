@@ -1,0 +1,37 @@
+!!! XML
+!!!
+%html
+  %head
+    %meta{ 'http-equiv' => 'content', :content => 'text/html; charset=utf-8'}
+    %link{'rel' => 'stylesheet', 'href' => '/main.css', 'type' => 'text/css'} 
+    %title Items - the Shop
+  %body
+    %h1 Items
+    %div.sale_amount
+      %span.uriage Sales
+      %span.amount= @amount.to_s
+    %p
+      %a{'href' => '/item/new'} New Item
+    %table
+      %thead
+        %tr
+          %td Name
+          %td Price
+          %td Stock
+          %td Remain
+          %td Amount
+          %td Edit
+          %td Destroy
+      %tbody
+        -@items.each do |i|
+          %tr
+            %td
+              %a{'href' => '/item/'+i.id.to_s}= i.name
+            %td= i.latest_price.price.to_s
+            %td= i.stock
+            %td= i.remain_stock.remain
+            %td= i.sale_amount
+            %td
+              %a{'href' => '/item/'+i.id.to_s+'/edit'} Edit
+            %td
+              %a{'href' => '/item/'+i.id.to_s+'/destroy'} Destroy
