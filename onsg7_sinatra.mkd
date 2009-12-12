@@ -329,7 +329,8 @@ Sora Harakami <sora134[at]gmail.com>
 - 続きは二次会などで.
 - 二次会会場はココ,Lingrです。
 - アンケートにご協力ください. [事後アンケート](http://spreadsheets.google.com/viewform?formkey=dHM5OGo0ZFlROXpOYWJ1cmt2bUNtUFE6MA)
-- 次回のお知らせは [Twitter](http://twitter.com/onlinesg), [ML](http://groups.google.co.jp/group/onlinestdygrp), [Blog](http://onsg.blogspot.com/) などでもながしますので是非チェックしてくださいo- 今回で年内のOnline.sgは最後です。よいお年を。次回は1月の予定です。
+- 次回のお知らせは [Twitter](http://twitter.com/onlinesg), [ML](http://groups.google.co.jp/group/onlinestdygrp), [Blog](http://onsg.blogspot.com/) などでもながしますので是非チェックしてください
+- 今回で年内のOnline.sgは最後です。よいお年を。次回は1月の予定です。
 
 
 #### vim: set filetype=markdown :
