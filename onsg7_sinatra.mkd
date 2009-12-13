@@ -1,6 +1,6 @@
 # Sinatra超入門 - ざっくりとSinatraの世界をつかんでみよう
 
-Sora Harakami <sora134[at]gmail.com>
+Sora Harakami <sora134@gmail.com>
 
 [http://codnote.net/](http://codnote.net/) 
 [Online.sg](http://onsg.techtalk.jp/07)
