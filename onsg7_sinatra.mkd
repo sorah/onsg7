@@ -46,7 +46,7 @@ Sora Harakami <sora134@gmail.com>
 - ruby-sqlite3が必要です。
 - sinatra activerecord hamlも必要です。
 
-        gem install sinatra activerecord haml ruby-sqlite3
+        gem install sinatra activerecord haml sqlite3-ruby
 
 - を実行しましょう。ruby-sqlite3はMacなら標準で入ってます。Linux/Winは前準備が必要です。
 - まぁそこらへんは[ここ](http://sites.google.com/site/onlinestdygrp/02/sqlite_setup)を見てなんとかしてください。
